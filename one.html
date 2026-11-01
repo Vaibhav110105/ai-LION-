@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-Powered Citizen Services & Smart Governance</title>
+    <style>
+      :root {
+        --bg: #071a2d;
+        --bg-soft: #0d2440;
+        --panel: rgba(15, 35, 56, 0.8);
+        --panel-strong: #102742;
+        --primary: #47d0ff;
+        --primary-2: #7ef2d5;
+        --accent: #8b7bff;
+        --text: #ebf7ff;
+        --muted: #b9d9ef;
+        --line: rgba(255, 255, 255, 0.12);
+        --shadow: 0 20px 60px rgba(10, 25, 42, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(71, 208, 255, 0.18), transparent 30%),
+          radial-gradient(circle at right, rgba(139, 123, 255, 0.16), transparent 35%),
+          linear-gradient(180deg, var(--bg) 0%, #071722 100%);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(18px);
+        background: rgba(7, 26, 45, 0.6);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 76px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .user-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(71, 208, 255, 0.25);
+        background: rgba(71, 208, 255, 0.08);
+        color: var(--text);
+        font-size: 0.82rem;
+        font-weight: 700;
+        max-width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .user-badge::before {
+        content: "👤";
+        display: inline-grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(126, 242, 213, 0.15);
+        font-size: 0.9rem;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        display: grid;
+        place-items: center;
+        color: #01213a;
+        font-weight: 900;
+        font-size: 1.05rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 0 22px;
+        border-radius: 999px;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid transparent;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #05223c;
+        box-shadow: 0 10px 30px rgba(71, 208, 255, 0.35);
+      }
+
+      .btn-secondary {
+        border-color: var(--line);
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .hero {
+        padding: 80px 0 60px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(71, 208, 255, 0.09);
+        border: 1px solid rgba(71, 208, 255, 0.25);
+        color: var(--primary);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      h1 {
+        font-size: clamp(2.6rem, 5vw, 5rem);
+        line-height: 0.98;
+        margin: 24px 0 20px;
+        letter-spacing: -0.05em;
+      }
+
+      .highlight {
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .lead {
+        font-size: 1.08rem;
+        line-height: 1.75;
+        color: var(--muted);
+        max-width: 620px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 32px;
+      }
+
+      .mini-stats {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+        margin-top: 34px;
+      }
+
+      .stat {
+        min-width: 120px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.7rem;
+        margin-bottom: 6px;
+      }
+
+      .stat span {
+        color: var(--muted);
+      }
+
+      .dashboard {
+        position: relative;
+        padding: 26px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(17, 42, 66, 0.95), rgba(9, 20, 35, 0.95));
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .dashboard::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 28px;
+        background: linear-gradient(135deg, rgba(71, 208, 255, 0.4), rgba(139, 123, 255, 0.2), transparent);
+        z-index: -1;
+        filter: blur(18px);
+      }
+
+      .window-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .dot:nth-child(1) { background: #ff7a7a; }
+      .dot:nth-child(2) { background: #ffcd70; }
+      .dot:nth-child(3) { background: #5ee0a1; }
+
+      .chart {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 18px;
+      }
+
+      .bars {
+        display: flex;
+        align-items: end;
+        height: 180px;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .bars span {
+        flex: 1;
+        border-radius: 12px 12px 0 0;
+        background: linear-gradient(180deg, var(--primary), var(--accent));
+        box-shadow: 0 8px 18px rgba(71, 208, 255, 0.28);
+      }
+
+      .bars span:nth-child(1) { height: 38%; }
+      .bars span:nth-child(2) { height: 52%; }
+      .bars span:nth-child(3) { height: 72%; }
+      .bars span:nth-child(4) { height: 86%; }
+      .bars span:nth-child(5) { height: 64%; }
+      .bars span:nth-child(6) { height: 92%; }
+      .bars span:nth-child(7) { height: 78%; }
+
+      .summary-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .mini-panel {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 18px;
+        padding: 16px;
+      }
+
+      .mini-panel small {
+        display: block;
+        color: var(--muted);
+      }
+
+      .mini-panel strong {
+        font-size: 1.5rem;
+        display: block;
+        margin-top: 8px;
+      }
+
+      section {
+        padding: 30px 0 90px;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+
+      .section-head h2 {
+        font-size: clamp(2rem, 3vw, 3rem);
+        margin: 0;
+        letter-spacing: -0.05em;
+      }
+
+      .section-head p {
+        max-width: 620px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .feature-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 28px 24px;
+        box-shadow: 0 10px 30px rgba(5, 15, 25, 0.18);
+      }
+
+      .feature-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, rgba(71, 208, 255, 0.2), rgba(126, 242, 213, 0.18));
+        border: 1px solid rgba(71, 208, 255, 0.3);
+        margin-bottom: 18px;
+        color: var(--primary);
+        font-size: 1.5rem;
+      }
+
+      .feature-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.35rem;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .services {
+        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 26px;
+      }
+
+      .service-list {
+        display: grid;
+        gap: 18px;
+      }
+
+      .service-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 20px 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .service-item strong {
+        font-size: 1.08rem;
+      }
+
+      .service-item span {
+        color: var(--muted);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(126, 242, 213, 0.12);
+        border: 1px solid rgba(126, 242, 213, 0.25);
+        color: var(--primary-2);
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .highlight-box {
+        border-radius: 26px;
+        background: linear-gradient(180deg, rgba(17, 36, 58, 0.9), rgba(10, 22, 35, 0.98));
+        border: 1px solid var(--line);
+        padding: 30px;
+        box-shadow: var(--shadow);
+      }
+
+      .highlight-box h3 {
+        margin: 0 0 12px;
+        font-size: 1.9rem;
+        letter-spacing: -0.04em;
+      }
+
+      .highlight-box p {
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .checklist {
+        margin-top: 22px;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 12px;
+      }
+
+      .checklist li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text);
+      }
+
+      .check {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        display: grid;
+        place-items: center;
+        color: #06243c;
+        font-weight: 900;
+        font-size: 0.8rem;
+      }
+
+      .complaint-tracker {
+        padding-top: 90px;
+      }
+
+      .complaint-tracker-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+      }
+
+      .status-card {
+        display: grid;
+        gap: 18px;
+        padding: 18px 0 0;
+      }
+
+      .status-header,
+      .status-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(4, 17, 30, 0.66);
+      }
+
+      .status-label {
+        color: var(--muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .status-pill.submitted {
+        background: rgba(71, 208, 255, 0.12);
+        color: var(--primary);
+      }
+
+      .status-pill.in-progress {
+        background: rgba(255, 193, 7, 0.12);
+        color: #ffd166;
+      }
+
+      .status-pill.escalated {
+        background: rgba(139, 123, 255, 0.12);
+        color: #c7b9ff;
+      }
+
+      .status-pill.resolved {
+        background: rgba(126, 242, 213, 0.12);
+        color: var(--primary-2);
+      }
+
+      .complaint-timeline {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .complaint-timeline li {
+        padding: 10px 6px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--muted);
+        font-size: 0.74rem;
+        text-align: center;
+      }
+
+      .complaint-timeline li.completed {
+        border-color: rgba(126, 242, 213, 0.45);
+        color: var(--primary-2);
+      }
+
+      .complaint-timeline li.current {
+        border-color: var(--primary);
+        background: rgba(71, 208, 255, 0.1);
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .demo-status-note {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.5;
+      }
+
+      .cta {
+        padding-top: 90px;
+      }
+
+      .cta-box {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 26px;
+        align-items: center;
+        background:
+          linear-gradient(135deg, rgba(71, 208, 255, 0.1), rgba(139, 123, 255, 0.08)),
+          rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 36px 28px;
+      }
+
+      .cta-box h3 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.05em;
+      }
+
+      .cta-box p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .cta-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 16px;
+        flex-wrap: nowrap;
+      }
+
+      footer {
+        padding: 26px 0 60px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .footer-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .portal {
+        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid var(--line);
+      }
+
+      .portal-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+      }
+
+      .portal-card {
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .portal-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.5rem;
+      }
+
+      .portal-card > p {
+        margin: 0 0 22px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .portal-form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .portal-form label {
+        display: grid;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      .portal-form input,
+      .portal-form select,
+      .portal-form textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 14px;
+        color: var(--text);
+        background: rgba(4, 17, 30, 0.72);
+        font: inherit;
+      }
+
+      .portal-form textarea {
+        min-height: 92px;
+        resize: vertical;
+      }
+
+      .portal-form input:focus,
+      .portal-form select:focus,
+      .portal-form textarea:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+
+      .portal-form option {
+        background: var(--panel-strong);
+      }
+
+      .form-message {
+        min-height: 24px;
+        margin: 0;
+        color: var(--primary-2);
+        line-height: 1.5;
+      }
+
+      .assistant-messages {
+        display: grid;
+        align-content: start;
+        gap: 12px;
+        min-height: 150px;
+        max-height: 245px;
+        overflow-y: auto;
+        margin: 18px 0;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(4, 17, 30, 0.45);
+      }
+
+      .chat-message {
+        max-width: 90%;
+        padding: 11px 14px;
+        border-radius: 14px;
+        background: rgba(71, 208, 255, 0.1);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .chat-message.user {
+        justify-self: end;
+        background: rgba(139, 123, 255, 0.2);
+      }
+
+      .chat-form {
+        display: flex;
+        gap: 10px;
+      }
+
+      .chat-form input {
+        min-width: 0;
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0 16px;
+        color: var(--text);
+        background: rgba(4, 17, 30, 0.72);
+        font: inherit;
+      }
+
+      .contact-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+      }
+
+      .contact-details a:hover {
+        color: var(--primary);
+      }
+
+      .rating-section {
+        padding-top: 10px;
+      }
+
+      .rating-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+        align-items: stretch;
+      }
+
+      .rating-card {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        padding: 28px;
+        box-shadow: var(--shadow);
+      }
+
+      .rating-card h3 {
+        margin: 0 0 12px;
+        font-size: 1.6rem;
+      }
+
+      .rating-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .star-row {
+        display: flex;
+        gap: 12px;
+        margin: 22px 0 16px;
+      }
+
+      .star-btn {
+        border: 1px solid rgba(71, 208, 255, 0.25);
+        background: rgba(71, 208, 255, 0.08);
+        color: #f7d76e;
+        font-size: 2rem;
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .star-btn:hover,
+      .star-btn.active {
+        transform: translateY(-2px);
+        background: rgba(126, 242, 213, 0.14);
+      }
+
+      .rating-summary {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .rating-score {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--primary-2);
+      }
+
+      .rating-feedback {
+        min-height: 26px;
+        margin-top: 18px;
+        color: var(--primary-2);
+      }
+
+      .contact-box-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        margin-top: 18px;
+      }
+
+      .contact-box-links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .contact-box-links a:hover {
+        color: var(--primary);
+      }
+
+      .demo-chatbot {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        width: min(400px, calc(100vw - 24px));
+        background: rgba(7, 26, 45, 0.96);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        z-index: 50;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.25s ease;
+      }
+
+      .demo-chatbot.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .chatbot-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .chatbot-header h4 {
+        margin: 0;
+        font-size: 1.08rem;
+      }
+
+      .chatbot-close {
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--text);
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      .chatbot-body {
+        max-height: 360px;
+        overflow-y: auto;
+        padding: 16px 18px 10px;
+      }
+
+      .chatbot-message {
+        padding: 10px 12px;
+        border-radius: 14px;
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+
+      .chatbot-message.bot {
+        background: rgba(71, 208, 255, 0.09);
+        border: 1px solid rgba(71, 208, 255, 0.2);
+      }
+
+      .chatbot-message.user {
+        background: rgba(139, 123, 255, 0.15);
+        border: 1px solid rgba(139, 123, 255, 0.2);
+        margin-left: 24px;
+      }
+
+      .chatbot-form {
+        display: flex;
+        gap: 8px;
+        padding: 14px 18px 18px;
+      }
+
+      .chatbot-form input {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0 16px;
+        min-height: 48px;
+        background: rgba(4, 17, 30, 0.72);
+        color: var(--text);
+        font: inherit;
+      }
+
+      .auth-page {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px 16px;
+        background:
+          radial-gradient(circle at top left, rgba(71, 208, 255, 0.18), transparent 26%),
+          radial-gradient(circle at bottom right, rgba(139, 123, 255, 0.16), transparent 30%),
+          linear-gradient(180deg, var(--bg) 0%, #071722 100%);
+      }
+
+      .auth-wrap {
+        width: min(1000px, 100%);
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        align-items: center;
+        gap: 32px;
+      }
+
+      .auth-panel {
+        padding: 28px 26px;
+        border-radius: 30px;
+        background: linear-gradient(180deg, rgba(17, 42, 66, 0.96), rgba(9, 20, 35, 0.96));
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .auth-hero {
+        padding: 24px 18px;
+        border-radius: 30px;
+        border: 1px solid rgba(71, 208, 255, 0.25);
+        background: linear-gradient(180deg, rgba(71, 208, 255, 0.08), rgba(139, 123, 255, 0.08));
+      }
+
+      .auth-hero p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .auth-hero h1 {
+        margin: 0 0 18px;
+        font-size: clamp(2.2rem, 4vw, 3.8rem);
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+      }
+
+      .auth-hero .mini-list {
+        margin-top: 24px;
+        display: grid;
+        gap: 12px;
+        color: var(--text);
+      }
+
+      .auth-hero .mini-list span {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .auth-hero .mini-list i {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #06243c;
+        font-style: normal;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+      }
+
+      .auth-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .auth-brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #06243c;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+      }
+
+      .auth-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .auth-tab {
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: transparent;
+        color: var(--muted);
+        padding: 10px 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .auth-tab.active {
+        background: rgba(71, 208, 255, 0.12);
+        color: var(--text);
+        border-color: rgba(71, 208, 255, 0.4);
+      }
+
+      .auth-form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .auth-form label {
+        display: grid;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .auth-form input {
+        width: 100%;
+        min-height: 48px;
+        border-radius: 12px;
+        padding: 0 14px;
+        background: rgba(4, 17, 30, 0.72);
+        border: 1px solid var(--line);
+        color: var(--text);
+        font: inherit;
+      }
+
+      .auth-form button {
+        margin-top: 6px;
+      }
+
+      .auth-message {
+        min-height: 24px;
+        margin: 0;
+        color: var(--primary-2);
+        line-height: 1.5;
+      }
+
+      .auth-hidden {
+        display: none !important;
+      }
+
+      .app-shell {
+        display: block;
+      }
+
+      .ratings-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .rating-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 12px 14px;
+        color: var(--muted);
+      }
+
+      .rating-item strong {
+        color: var(--text);
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .service-grid,
+        .cta-box,
+        .portal-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .cta-actions {
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .nav-links {
+          display: none;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .section-head {
+          display: block;
+        }
+
+        .hero {
+          padding-top: 60px;
+        }
+
+        .footer-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .portal-card {
+          padding: 22px;
+        }
+
+        .chat-form {
+          flex-direction: column;
+        }
+
+        .chat-form input {
+          min-height: 48px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="auth-page" id="auth-page">
+      <div class="auth-wrap">
+        <div class="auth-panel auth-hero">
+          <div class="auth-brand">
+            <span class="auth-brand-mark">A</span>
+            <div>
+              <strong>AI-Powered Citizen Services</strong>
+            </div>
+          </div>
+
+          <h1>Smart governance for every citizen.</h1>
+          <p>
+            Access faster public services, raise complaints, track service requests,
+            and stay connected to a more responsive digital government system.
+          </p>
+
+          <div class="mini-list">
+            <span><i>✓</i> Secure citizen access</span>
+            <span><i>✓</i> Complaint and service support</span>
+            <span><i>✓</i> Transparent digital governance</span>
+          </div>
+        </div>
+
+        <div class="auth-panel">
+          <div class="auth-tabs" aria-label="Authentication tabs">
+            <button class="auth-tab active" data-mode="login" type="button">Login</button>
+            <button class="auth-tab" data-mode="signup" type="button">Sign Up</button>
+          </div>
+
+          <form class="auth-form" id="login-form">
+            <label for="auth-email">Email ID
+              <input id="auth-email" type="email" placeholder="Enter email id" required />
+            </label>
+            <label for="auth-password">Password
+              <input id="auth-password" type="password" placeholder="Enter password" required />
+            </label>
+            <button class="btn btn-primary" type="submit">Access Website</button>
+            <p class="auth-message" id="auth-message" aria-live="polite"></p>
+          </form>
+
+          <form class="auth-form auth-hidden" id="signup-form">
+            <label for="signup-name">Full Name
+              <input id="signup-name" type="text" placeholder="Enter full name" required />
+            </label>
+            <label for="signup-email">Email ID
+              <input id="signup-email" type="email" placeholder="Enter email id" required />
+            </label>
+            <label for="signup-password">Password
+              <input id="signup-password" type="password" placeholder="Enter password" required />
+            </label>
+            <button class="btn btn-primary" type="submit">Create Account</button>
+            <p class="auth-message" id="signup-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div class="app-shell auth-hidden" id="app-shell">
+      <header class="topbar">
+        <div class="container nav">
+          <a href="#" class="brand" aria-label="Home">
+            <span class="brand-mark">A</span>
+            <span>AI-POWER</span>
+          </a>
+
+          <nav class="nav-links" aria-label="Main navigation">
+            <a href="#solutions">Solutions</a>
+            <a href="#services">Services</a>
+            <a href="#impact">Impact</a>
+            <a href="#citizen-portal">Citizen Portal</a>
+            <a href="#contact">Contact</a>
+          </nav>
+
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div class="user-badge" id="user-badge" style="display:none;"></div>
+            <button class="btn btn-primary" id="open-demo-chat" type="button">Book a Demo</button>
+            <button class="btn btn-secondary auth-logout" id="logout-btn" type="button" style="display:none;">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">Future-ready public systems</div>
+
+            <h1>
+              AI-powered citizen services & smart
+              <span class="highlight">Governance</span>
+            </h1>
+
+            <p class="lead">
+              Transform public service delivery with data-driven intelligence,
+              frictionless citizen experiences, and transparent governance
+              systems that build trust and improve outcomes for every community.
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#solutions">Explore Solutions</a>
+              <a class="btn btn-secondary" href="#impact">See Impact</a>
+            </div>
+
+            <div class="mini-stats">
+              <div class="stat">
+                <strong>42%</strong>
+                <span>Faster service delivery</span>
+              </div>
+              <div class="stat">
+                <strong>89%</strong>
+                <span>Citizen satisfaction</span>
+              </div>
+              <div class="stat">
+                <strong>24/7</strong>
+                <span>Digital support</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard" aria-label="AI dashboard preview">
+            <div class="window-bar">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+
+            <div class="chart">
+              <div style="display:flex; justify-content:space-between; color:var(--muted);">
+                <span>Service Efficiency</span>
+                <strong style="color:var(--text);">+74%</strong>
+              </div>
+
+              <div class="bars" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <div class="summary-row">
+              <div class="mini-panel">
+                <small>Smart Applications</small>
+                <strong>1,280</strong>
+              </div>
+
+              <div class="mini-panel">
+                <small>Response Time</small>
+                <strong>4.2 min</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="solutions">
+        <div class="container">
+          <div class="section-head">
+            <h2>Built for responsive, inclusive public services</h2>
+            <p>
+              Our AI-powered governance platform unifies citizen support,
+              operational insights, and policy intelligence to help public
+              institutions serve better and act faster.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-icon">✦</div>
+              <h3>Smart Service Access</h3>
+              <p>
+                Enable citizens to resolve queries, submit requests, and track
+                service progress through conversational, multilingual digital
+                channels.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">◎</div>
+              <h3>Predictive Governance</h3>
+              <p>
+                Use AI to forecast demand, allocate resources intelligently, and
+                prioritize interventions with real-time public data.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">▣</div>
+              <h3>Transparent Decision Support</h3>
+              <p>
+                Bring clear insights into policy performance, program
+                effectiveness, and service quality for accountable leadership.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="services" id="services">
+        <div class="container service-grid">
+          <div class="service-list">
+            <div class="service-item">
+              <div>
+                <strong>Citizen Query Automation</strong>
+                <span>AI-powered assistance for requests, guidance, and case routing</span>
+              </div>
+              <span class="pill">Smart</span>
+            </div>
+
+            <div class="service-item">
+              <div>
+                <strong>Public Service Intelligence</strong>
+                <span>Operational dashboards that improve planning and delivery</span>
+              </div>
+              <span class="pill">Live</span>
+            </div>
+
+            <div class="service-item">
+              <div>
+                <strong>Fraud & Risk Monitoring</strong>
+                <span>Detect anomalies in service usage and benefit accuracy</span>
+              </div>
+              <span class="pill">Secure</span>
+            </div>
+          </div>
+
+          <div class="highlight-box" id="impact">
+            <h3>From fragmented administration to connected civic action</h3>
+            <p>
+              We help governments and public agencies turn data, policy, and
+              citizen context into better decisions and smoother service
+              experiences.
+            </p>
+
+            <ul class="checklist">
+              <li><span class="check">✓</span> Unified digital service journeys</li>
+              <li><span class="check">✓</span> Faster approvals and response workflows</li>
+              <li><span class="check">✓</span> Greater trust through transparent operations</li>
+              <li><span class="check">✓</span> More inclusive and accessible experiences</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="portal" id="citizen-portal">
+        <div class="container">
+          <div class="section-head">
+            <h2>Your services, one simple portal</h2>
+            <p>Submit a service request, get a reference number, and look up its saved status. This interactive demo stores requests in this browser only.</p>
+          </div>
+
+          <div class="portal-grid">
+            <article class="portal-card">
+              <h3>Request a citizen service</h3>
+              <p>Tell us what you need and receive a local demo tracking reference.</p>
+              <form class="portal-form" id="request-form">
+                <label for="citizen-name">Full name
+                  <input id="citizen-name" name="name" autocomplete="name" required maxlength="80" placeholder="Your name" />
+                </label>
+                <label for="citizen-mobile">Mobile number
+                  <input id="citizen-mobile" name="mobile" type="tel" autocomplete="tel" required pattern="[0-9+() -]{8,18}" placeholder="Your contact number" />
+                </label>
+                <label for="service-type">Service needed
+                  <select id="service-type" name="service" required>
+                    <option value="">Choose a service</option>
+                    <option>Certificate or document</option>
+                    <option>Public benefits and schemes</option>
+                    <option>Water, roads, or sanitation</option>
+                    <option>Local issue or complaint</option>
+                    <option>Other citizen service</option>
+                  </select>
+                </label>
+                <label for="request-details">Request details
+                  <textarea id="request-details" name="details" required maxlength="500" placeholder="Briefly describe how we can help"></textarea>
+                </label>
+                <button class="btn btn-primary" type="submit">Submit request</button>
+                <p class="form-message" id="request-message" role="status" aria-live="polite"></p>
+              </form>
+            </article>
+
+            <article class="portal-card">
+              <h3>AI service guide</h3>
+              <p>Ask about using this portal, finding services, or checking a request reference. This sample guide runs in your browser and does not connect to a government database.</p>
+              <div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-label="Assistant conversation">
+                <div class="chat-message">Hello! I can help you find a service or explain how to track a request. What would you like to know?</div>
+              </div>
+              <form class="chat-form" id="assistant-form">
+                <input id="assistant-input" aria-label="Ask the service guide" required maxlength="240" placeholder="Try: How do I track a request?" />
+                <button class="btn btn-primary" type="submit">Ask</button>
+              </form>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="complaint-tracker" id="complaint-tracking">
+        <div class="container">
+          <div class="section-head">
+            <h2>Complaint tracking</h2>
+            <p>Register a complaint, get a unique complaint ID, and monitor its live status as it moves through the service workflow.</p>
+          </div>
+
+          <div class="complaint-tracker-grid">
+            <article class="portal-card">
+              <h3>Register complaint</h3>
+              <p>Submit a complaint to receive a unique ID and see the latest update.</p>
+              <form class="portal-form" id="complaint-form">
+                <label for="complaint-name">Full name
+                  <input id="complaint-name" name="name" autocomplete="name" required maxlength="80" placeholder="Your name" />
+                </label>
+                <label for="complaint-category">Complaint type
+                  <select id="complaint-category" name="category" required>
+                    <option value="">Choose a complaint type</option>
+                    <option>Water and sanitation</option>
+                    <option>Road and traffic</option>
+                    <option>Public facility issue</option>
+                    <option>Document or service delay</option>
+                    <option>General grievance</option>
+                  </select>
+                </label>
+                <label for="complaint-details">Complaint details
+                  <textarea id="complaint-details" name="details" required maxlength="500" placeholder="Describe the issue, exact location, and urgency"></textarea>
+                </label>
+                <button class="btn btn-primary" type="submit">Register complaint</button>
+                <p class="form-message" id="complaint-message" role="status" aria-live="polite"></p>
+              </form>
+            </article>
+
+            <article class="portal-card">
+              <h3>Live complaint status</h3>
+              <div class="status-card">
+                <div class="status-header">
+                  <span class="status-label">Complaint ID</span>
+                  <strong id="live-complaint-id">Not checked</strong>
+                </div>
+
+                <div class="status-row">
+                  <span class="status-label">Current stage</span>
+                  <span id="live-complaint-status" class="status-pill submitted">Submitted</span>
+                </div>
+
+                <div class="status-row">
+                  <span class="status-label">Last update</span>
+                  <span id="live-complaint-update">No updates yet</span>
+                </div>
+
+                <div class="status-row">
+                  <span class="status-label">Assigned team</span>
+                  <span id="live-complaint-team">Citizen help desk</span>
+                </div>
+              </div>
+
+              <ol class="complaint-timeline" id="complaint-timeline" aria-label="Complaint progress">
+                <li data-stage="0">Submitted</li>
+                <li data-stage="1">In Progress</li>
+                <li data-stage="2">Escalated</li>
+                <li data-stage="3">Resolved</li>
+              </ol>
+              <p class="demo-status-note">Demo status is simulated in this browser and advances every 15 seconds. It is not connected to a government department.</p>
+
+              <form class="portal-form" id="complaint-tracker-form" style="margin-top: 22px;">
+                <label for="tracker-complaint-id">Check complaint by ID
+                  <input id="tracker-complaint-id" name="complaintId" placeholder="Example: CMP-32654189" required maxlength="30" />
+                </label>
+                <button class="btn btn-secondary" type="submit">Check status</button>
+                <p class="form-message" id="tracker-message" role="status" aria-live="polite"></p>
+              </form>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="rating-section" id="rate-service">
+        <div class="container">
+          <div class="section-head">
+            <h2>Rate public service</h2>
+            <p>Tell us how satisfied you are with the quality, speed, and transparency of public service delivery.</p>
+          </div>
+
+          <div class="rating-box">
+            <div class="rating-card">
+              <h3>Service quality feedback</h3>
+              <p>Choose a rating to share how your recent experience was handled.</p>
+
+              <div class="star-row" aria-label="Rate the public service">
+                <button class="star-btn" type="button" data-value="1" aria-label="Rate 1 star">★</button>
+                <button class="star-btn" type="button" data-value="2" aria-label="Rate 2 stars">★</button>
+                <button class="star-btn" type="button" data-value="3" aria-label="Rate 3 stars">★</button>
+                <button class="star-btn" type="button" data-value="4" aria-label="Rate 4 stars">★</button>
+                <button class="star-btn" type="button" data-value="5" aria-label="Rate 5 stars">★</button>
+              </div>
+
+              <button class="btn btn-primary" id="submit-rating" type="button">Submit rating</button>
+              <p class="rating-feedback" id="rating-feedback" aria-live="polite"></p>
+            </div>
+
+            <div class="rating-card">
+              <h3>Community sentiment</h3>
+              <p>Live public feedback summary for the service experience.</p>
+              <div class="rating-summary">
+                <span class="rating-score" id="rating-score">0.0</span>
+                <span>/ 5 average</span>
+              </div>
+              <div class="ratings-list" id="ratings-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta" id="contact">
+        <div class="container">
+          <div class="cta-box">
+            <div>
+              <h3>Modernize public engagement with intelligent governance</h3>
+              <p>
+                Build a more responsive, efficient, and citizen-centered public
+                service model powered by AI and smart policy insights.
+              </p>
+            </div>
+
+            <div class="cta-actions">
+              <a class="btn btn-primary" href="mailto:mahajano212@gmail.com">Contact Us</a>
+              <a class="btn btn-secondary" href="#solutions">Learn More</a>
+              <a class="btn btn-secondary" href="#complaint-tracking">Complaint Tracking</a>
+            </div>
+            <div class="contact-box-links">
+              <a href="tel:9270233537">📞 9270233537</a>
+              <a href="mailto:mahajano212@gmail.com">✉️ mahajano212@gmail.com</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="demo-chatbot" id="demo-chatbot" aria-live="polite">
+      <div class="chatbot-header">
+        <h4>AI Citizen Support Bot</h4>
+        <button class="chatbot-close" id="close-demo-chat" type="button" aria-label="Close chatbot">×</button>
+      </div>
+      <div class="chatbot-body" id="chatbot-body">
+        <div class="chatbot-message bot">Hello! I can help with public services, document requests, and complaint support. Ask me anything about citizen services.</div>
+      </div>
+      <form class="chatbot-form" id="demo-chat-form">
+        <input id="demo-chat-input" type="text" placeholder="Type your service or complaint..." aria-label="Ask the chatbot" />
+        <button class="btn btn-primary" type="submit">Send</button>
+      </form>
+    </aside>
+
+      <footer>
+        <div class="container footer-bar">
+          <div>
+            <div>© 2026 AI-powered citizen services & smart governance</div>
+            <div class="contact-details" id="contact-details">
+              <a href="tel:9270233537">Mobile: 9270233537</a>
+              <a href="mailto:mahajano212@gmail.com">Email: mahajano212@gmail.com</a>
+            </div>
+          </div>
+          <div>Faster services. Smarter governance. Better communities.</div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const requestStorageKey = "aipower-citizen-requests";
+      const ratingStorageKey = "aipower-public-ratings";
+      const authStorageKey = "aipower-auth-user";
+      const complaintStorageKey = "aipower-complaints";
+      const complaintStageDuration = 15000;
+      const complaintStages = [
+        { label: "Submitted", team: "Citizen help desk", tone: "submitted", update: "Complaint received and queued for initial review." },
+        { label: "In Progress", team: "Municipal operations team", tone: "in-progress", update: "The assigned team is actively reviewing the issue." },
+        { label: "Escalated", team: "Public services cell", tone: "escalated", update: "The complaint has been escalated for urgent action." },
+        { label: "Resolved", team: "Field service unit", tone: "resolved", update: "The complaint has been resolved and closed." }
+      ];
+      let activeComplaintId = null;
+
+      function getComplaints() {
+        try {
+          return JSON.parse(localStorage.getItem(complaintStorageKey) || "[]");
+        } catch {
+          return [];
+        }
+      }
+
+      function getComplaintId() {
+        const existingIds = new Set(getComplaints().map((complaint) => complaint.id));
+        let complaintId;
+        do {
+          const randomPart = crypto.getRandomValues(new Uint32Array(1))[0].toString().padStart(10, "0").slice(-10);
+          complaintId = `CMP-${randomPart}`;
+        } while (existingIds.has(complaintId));
+        return complaintId;
+      }
+
+      function getComplaintStage(record, now = Date.now()) {
+        const createdAt = Date.parse(record.createdAt);
+        const elapsed = Number.isFinite(createdAt) ? Math.max(0, now - createdAt) : 0;
+        const stageIndex = Math.min(complaintStages.length - 1, Math.floor(elapsed / complaintStageDuration));
+        return { stageIndex, statusInfo: complaintStages[stageIndex] };
+      }
+
+      function renderComplaintStatus(record) {
+        const { stageIndex, statusInfo } = getComplaintStage(record);
+        const statusStartedAt = new Date(Date.parse(record.createdAt) + stageIndex * complaintStageDuration);
+
+        document.getElementById("live-complaint-id").textContent = record.id;
+        const statusNode = document.getElementById("live-complaint-status");
+        statusNode.textContent = statusInfo.label;
+        statusNode.className = `status-pill ${statusInfo.tone}`;
+        document.getElementById("live-complaint-update").textContent = `${statusInfo.update} Updated ${statusStartedAt.toLocaleTimeString()}.`;
+        document.getElementById("live-complaint-team").textContent = statusInfo.team;
+        document.querySelectorAll("#complaint-timeline li").forEach((stage) => {
+          const itemStage = Number(stage.dataset.stage);
+          stage.classList.toggle("completed", itemStage < stageIndex);
+          stage.classList.toggle("current", itemStage === stageIndex);
+          if (itemStage === stageIndex) {
+            stage.setAttribute("aria-current", "step");
+          } else {
+            stage.removeAttribute("aria-current");
+          }
+        });
+      }
+
+      document.getElementById("complaint-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const formData = new FormData(form);
+        const complaintId = getComplaintId();
+        const complaint = {
+          id: complaintId,
+          name: formData.get("name").trim(),
+          category: formData.get("category"),
+          details: formData.get("details").trim(),
+          createdAt: new Date().toISOString()
+        };
+
+        const complaints = getComplaints();
+        complaints.unshift(complaint);
+        localStorage.setItem(complaintStorageKey, JSON.stringify(complaints));
+
+        document.getElementById("complaint-message").textContent = `Complaint registered successfully. Your unique complaint ID is ${complaintId}.`;
+        document.getElementById("tracker-complaint-id").value = complaintId;
+        document.getElementById("tracker-message").textContent = `Tracking complaint ${complaintId}. Its demo status will update automatically.`;
+        activeComplaintId = complaintId;
+        renderComplaintStatus(complaint);
+        form.reset();
+      });
+
+      document.getElementById("complaint-tracker-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = document.getElementById("tracker-complaint-id");
+        const complaintId = input.value.trim().toUpperCase();
+        const complaint = getComplaints().find((item) => item.id.toUpperCase() === complaintId);
+        const trackerMessage = document.getElementById("tracker-message");
+
+        if (!complaint) {
+          trackerMessage.textContent = "No complaint was found for this ID. Please register a complaint first or use a generated complaint ID.";
+          return;
+        }
+
+        activeComplaintId = complaint.id;
+        const { statusInfo } = getComplaintStage(complaint);
+        trackerMessage.textContent = `Status for ${complaint.id}: ${statusInfo.label}. This demo refreshes automatically.`;
+        renderComplaintStatus(complaint);
+      });
+
+      window.setInterval(() => {
+        if (!activeComplaintId) return;
+        const complaint = getComplaints().find((item) => item.id === activeComplaintId);
+        if (complaint) renderComplaintStatus(complaint);
+      }, 1000);
+
+      function getCurrentUser() {
+        try {
+          return JSON.parse(localStorage.getItem(authStorageKey) || "null");
+        } catch {
+          return null;
+        }
+      }
+
+      function setCurrentUser(user) {
+        if (!user) {
+          localStorage.removeItem(authStorageKey);
+          return;
+        }
+        localStorage.setItem(authStorageKey, JSON.stringify(user));
+      }
+
+      function showAuthMode(mode) {
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+        const tabs = document.querySelectorAll(".auth-tab");
+
+        const isLogin = mode === "login";
+        loginForm.classList.toggle("auth-hidden", !isLogin);
+        signupForm.classList.toggle("auth-hidden", isLogin);
+
+        tabs.forEach((tab) => {
+          tab.classList.toggle("active", tab.dataset.mode === mode);
+        });
+      }
+
+      function requireAuth() {
+        const user = getCurrentUser();
+        const authPage = document.getElementById("auth-page");
+        const appShell = document.getElementById("app-shell");
+        const logoutBtn = document.getElementById("logout-btn");
+        const userBadge = document.getElementById("user-badge");
+
+        if (!user) {
+          authPage.classList.remove("auth-hidden");
+          appShell.classList.add("auth-hidden");
+          logoutBtn.style.display = "none";
+          userBadge.style.display = "none";
+          userBadge.textContent = "";
+          return false;
+        }
+
+        authPage.classList.add("auth-hidden");
+        appShell.classList.remove("auth-hidden");
+        logoutBtn.style.display = "inline-flex";
+        userBadge.textContent = user.fullName || user.email;
+        userBadge.style.display = "inline-flex";
+        return true;
+      }
+
+      document.querySelectorAll(".auth-tab").forEach((tab) => {
+        tab.addEventListener("click", () => showAuthMode(tab.dataset.mode));
+      });
+
+      document.getElementById("login-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = document.getElementById("auth-email").value.trim();
+        const password = document.getElementById("auth-password").value.trim();
+        const message = document.getElementById("auth-message");
+
+        const users = JSON.parse(localStorage.getItem("aipower-users") || "[]");
+        const match = users.find((user) => user.email.toLowerCase() === email.toLowerCase() && user.password === password);
+
+        if (!match) {
+          message.textContent = "Invalid email or password. Please sign up first.";
+          return;
+        }
+
+        setCurrentUser({ fullName: match.fullName, email: match.email });
+        message.textContent = "Login successful.";
+        requireAuth();
+      });
+
+      document.getElementById("signup-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const fullName = document.getElementById("signup-name").value.trim();
+        const email = document.getElementById("signup-email").value.trim();
+        const password = document.getElementById("signup-password").value.trim();
+        const message = document.getElementById("signup-message");
+
+        if (!fullName || !email || !password) {
+          message.textContent = "Please enter full name, email ID, and password.";
+          return;
+        }
+
+        const users = JSON.parse(localStorage.getItem("aipower-users") || "[]");
+        const exists = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
+
+        if (exists) {
+          message.textContent = "This email is already registered. Please login instead.";
+          return;
+        }
+
+        users.push({ fullName, email, password });
+        localStorage.setItem("aipower-users", JSON.stringify(users));
+        setCurrentUser({ fullName, email });
+        message.textContent = "Sign up successful. You can now access the website.";
+        document.getElementById("signup-form").reset();
+        requireAuth();
+      });
+
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        setCurrentUser(null);
+        requireAuth();
+      });
+
+      function getRequests() {
+        try {
+          return JSON.parse(localStorage.getItem(requestStorageKey) || "[]");
+        } catch {
+          return [];
+        }
+      }
+
+      function getRatings() {
+        try {
+          return JSON.parse(localStorage.getItem(ratingStorageKey) || "[]");
+        } catch {
+          return [];
+        }
+      }
+
+      function renderRatings() {
+        const ratings = getRatings();
+        const scoreElement = document.getElementById("rating-score");
+        const listElement = document.getElementById("ratings-list");
+
+        if (!ratings.length) {
+          scoreElement.textContent = "0.0";
+          listElement.innerHTML = '<div class="rating-item"><strong>No ratings yet</strong><span>Be the first to rate the service.</span></div>';
+          return;
+        }
+
+        const total = ratings.reduce((sum, item) => sum + item.value, 0);
+        const average = total / ratings.length;
+        scoreElement.textContent = average.toFixed(1);
+
+        const distribution = [1, 2, 3, 4, 5].map((value) => ({
+          value,
+          count: ratings.filter((rating) => rating.value === value).length
+        }));
+
+        listElement.innerHTML = distribution.map(({ value, count }) => `
+          <div class="rating-item">
+            <strong>${value}★</strong>
+            <span>${count} vote${count === 1 ? "" : "s"}</span>
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("request-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+
+        const formData = new FormData(form);
+        const reference = `CIT-${Date.now().toString().slice(-8)}`;
+        const request = {
+          reference,
+          name: formData.get("name").trim(),
+          mobile: formData.get("mobile").trim(),
+          service: formData.get("service"),
+          details: formData.get("details").trim(),
+          status: "Submitted",
+          createdAt: new Date().toISOString()
+        };
+
+        const requests = getRequests();
+        requests.unshift(request);
+        try {
+          localStorage.setItem(requestStorageKey, JSON.stringify(requests));
+          document.getElementById("request-message").textContent = `Request saved in this browser. Your reference is ${reference}. Ask the service guide to track it.`;
+          form.reset();
+        } catch {
+          document.getElementById("request-message").textContent = "This browser could not save the request. Please enable local storage and try again.";
+        }
+      });
+
+      function guideReply(message) {
+        const text = message.toLowerCase();
+        const reference = message.match(/cit-\d{8}/i)?.[0];
+        if (reference) {
+          const request = getRequests().find((item) => item.reference.toLowerCase() === reference.toLowerCase());
+          return request
+            ? `Request ${request.reference} for ${request.service} is currently marked “${request.status}” in this browser's demo records.`
+            : `I couldn't find ${reference} in this browser. References are only available on the device where the request was submitted.`;
+        }
+        if (/track|status|reference/.test(text)) {
+          return "Submit your request in the Citizen Portal to receive a reference like CIT-12345678, then send that reference here to see its locally saved status.";
+        }
+        if (/certificate|document|benefit|scheme|water|road|sanitation|complaint|service/.test(text)) {
+          return "Choose the closest service category in the request form, describe what you need, and submit it to receive a tracking reference.";
+        }
+        if (/contact|phone|mobile|email/.test(text)) {
+          return "You can reach the service contact at 9270233537 or mahajano212@gmail.com.";
+        }
+        return "Team LION can guide you through submitting a service request, tracking a CIT reference, or finding the contact details. What do you need help with?";
+      }
+
+      document.getElementById("assistant-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = document.getElementById("assistant-input");
+        const messages = document.getElementById("assistant-messages");
+        const question = input.value.trim();
+        if (!question) return;
+
+        const userMessage = document.createElement("div");
+        userMessage.className = "chat-message user";
+        userMessage.textContent = question;
+        messages.append(userMessage);
+
+        const reply = document.createElement("div");
+        reply.className = "chat-message";
+        reply.textContent = guideReply(question);
+        messages.append(reply);
+        messages.scrollTop = messages.scrollHeight;
+        input.value = "";
+      });
+
+      function complaintBotReply(message) {
+        const text = message.toLowerCase();
+        if (/water|drain|sewer|sanitation|leak|pipe/.test(text)) {
+          return "Please report the issue with location, photo, and urgency. Our team will route it to the local water or sanitation department for fast action.";
+        }
+        if (/road|pothole|street|traffic|signal/.test(text)) {
+          return "For road or traffic complaints, share the exact location and a short description. This will be escalated to the road maintenance or transport team.";
+        }
+        if (/certificate|document|birth|ration|income|permit|id/.test(text)) {
+          return "You can request the needed certificate or document through the citizen service portal. Submit your request with your name, mobile number, and document type.";
+        }
+        if (/complaint|problem|issue|grievance/.test(text)) {
+          return "Please describe the problem, where it occurred, and how urgent it is. We will guide the complaint to the correct public service team.";
+        }
+        if (/benefit|scheme|assistance|support/.test(text)) {
+          return "You can request public benefit or scheme support by submitting your service request and selecting the relevant category in the portal.";
+        }
+        if (/contact|phone|mobile|email/.test(text)) {
+          return "You can contact the team directly at 9270233537 or mahajano212@gmail.com.";
+        }
+        return "I can help with service requests, complaint registration, status tracking, and guidance for public benefits. Please tell me the service or issue you need help with.";
+      }
+
+      const demoChatbot = document.getElementById("demo-chatbot");
+      const openDemoChat = document.getElementById("open-demo-chat");
+      const closeDemoChat = document.getElementById("close-demo-chat");
+      const demoChatForm = document.getElementById("demo-chat-form");
+      const demoChatInput = document.getElementById("demo-chat-input");
+      const chatbotBody = document.getElementById("chatbot-body");
+
+      function openChat() {
+        demoChatbot.classList.add("open");
+        demoChatInput.focus();
+      }
+
+      function closeChat() {
+        demoChatbot.classList.remove("open");
+      }
+
+      openDemoChat.addEventListener("click", openChat);
+      closeDemoChat.addEventListener("click", closeChat);
+
+      demoChatForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const question = demoChatInput.value.trim();
+        if (!question) return;
+
+        const userMessage = document.createElement("div");
+        userMessage.className = "chatbot-message user";
+        userMessage.textContent = question;
+        chatbotBody.appendChild(userMessage);
+
+        const reply = document.createElement("div");
+        reply.className = "chatbot-message bot";
+        reply.textContent = complaintBotReply(question);
+        chatbotBody.appendChild(reply);
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        demoChatInput.value = "";
+      });
+
+      let selectedRating = 0;
+      const stars = document.querySelectorAll(".star-btn");
+      const ratingFeedback = document.getElementById("rating-feedback");
+
+      stars.forEach((star) => {
+        star.addEventListener("click", () => {
+          selectedRating = Number(star.dataset.value);
+          stars.forEach((item) => {
+            const active = Number(item.dataset.value) <= selectedRating;
+            item.classList.toggle("active", active);
+          });
+          ratingFeedback.textContent = `You selected ${selectedRating} star${selectedRating > 1 ? "s" : ""}.`;
+        });
+      });
+
+      document.getElementById("submit-rating").addEventListener("click", () => {
+        if (!selectedRating) {
+          ratingFeedback.textContent = "Please select a star rating before submitting.";
+          return;
+        }
+
+        const ratings = getRatings();
+        ratings.push({ value: selectedRating, createdAt: new Date().toISOString() });
+        localStorage.setItem(ratingStorageKey, JSON.stringify(ratings));
+        ratingFeedback.textContent = `Thank you! Your ${selectedRating}-star rating has been submitted.`;
+        selectedRating = 0;
+        stars.forEach((star) => star.classList.remove("active"));
+        renderRatings();
+      });
+
+      showAuthMode("login");
+      requireAuth();
+      document.querySelectorAll("#complaint-timeline li").forEach((stage) => {
+        if (stage.dataset.stage === "0") stage.classList.add("current");
+      });
+      renderRatings();
+    </script>
+  </body>
+</html>
